@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+const events = (await getCollection('events')).sort((a, b) => a.data.date.localeCompare(b.data.date));
+---
+<BaseLayout title="体験・田んぼ教室｜そらつち農場">
+  <section class="page-hero"><div class="container"><p class="eyebrow">EVENTS</p><h1>体験・田んぼ教室</h1><p class="lead">田んぼに入り、土にふれ、季節の変化を感じながら、有機農業と米づくりを学ぶ体験の場です。</p></div></section>
+  <section class="page-section"><div class="container event-grid">{events.map((event) => (<article class="card"><p class="eyebrow">{event.data.date}</p><h3>{event.data.title}</h3><p>{event.data.description}</p><div class="event-meta"><span class="pill status">{event.data.status}</span><span class="pill">{event.data.location}</span>{event.data.price && <span class="pill">{event.data.price}</span>}</div><a class="button-outline" href={`/events/${event.slug}/`}>詳細を見る</a></article>))}</div></section>
+  <section class="page-section"><div class="container note"><h2>申し込みについて</h2><p>各イベントページの「申し込む」ボタンからGoogleフォームへ移動します。フォーム送信後、運営側から詳細をご案内します。</p></div></section>
+</BaseLayout>
