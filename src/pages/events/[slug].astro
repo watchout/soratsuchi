@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const events = await getCollection('events');
+  return events.map((event) => ({ params: { slug: event.slug }, props: { event } }));
+}
+
+const { event } = Astro.props;
+const { Content } = await render(event);
+---
+<BaseLayout title={`${event.data.title}｜そらつち農場`} description={event.data.description}>
+  <section class="page-hero"><div class="container"><p class="eyebrow">EVENT</p><h1>{event.data.title}</h1><p class="lead">{event.data.description}</p><div class="event-meta"><span class="pill status">{event.data.status}</span><span class="pill">{event.data.date}</span>{event.data.endDate && <span class="pill">終了予定：{event.data.endDate}</span>}<span class="pill">{event.data.location}</span>{event.data.price && <span class="pill">{event.data.price}</span>}</div><div class="cta-row">{event.data.formUrl ? <a class="button" href={event.data.formUrl} target="_blank" rel="noreferrer">Googleフォームで申し込む</a> : <a class="button-outline" href="/contact/">お問い合わせ</a>}<a class="button-outline" href="/events/">一覧へ戻る</a></div></div></section>
+  <section class="page-section"><div class="container prose"><Content /></div></section>
+</BaseLayout>
