@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+const events = (await getCollection('events')).sort((a, b) => a.data.date.localeCompare(b.data.date)).slice(0, 3);
+---
+<BaseLayout>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <p class="eyebrow">埼玉県小川町の有機農場</p>
+        <h1>小川町の空と土から、いのちが巡る野菜とお米を。</h1>
+        <p class="lead">そらつち農場は、農薬や化学肥料に頼らず、地域の資源を活かした循環型の農に取り組む農場です。田んぼ教室や体験会を通じて、食べものが生まれる風景も届けています。</p>
+        <div class="cta-row">
+          <a class="button" href="/events/">体験・田んぼ教室を見る</a>
+          <a class="button-outline" href="/about/">農場について</a>
+        </div>
+      </div>
+      <div class="hero-card" aria-label="田んぼと里山を表したイラスト">
+        <div class="farm-illustration"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container section-head">
+      <h2>土を育て、種をつなぎ、地域とめぐる。</h2>
+      <p>小川町は、長く有機農業が実践されてきた地域です。そらつち農場では、その土地の気候や風土に合わせ、田んぼと畑の営みを続けています。</p>
+    </div>
+    <div class="container cards">
+      <article class="card"><h3>土を育てる</h3><p>草や地域資源を活かし、土の力を高めながら作物を育てます。</p></article>
+      <article class="card"><h3>種をつなぐ</h3><p>その土地に合う作物を見つめ、固定種や自家採種の考えを大切にします。</p></article>
+      <article class="card"><h3>体験で伝える</h3><p>田んぼ教室や体験会を通じて、食と農のつながりを伝えます。</p></article>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">EXPERIENCE</p>
+        <h2>田んぼに入ると、食べものの見え方が変わる。</h2>
+        <p>田植え、草取り、稲刈り、収穫。季節ごとの作業を通じて、米づくりや有機農業を学べる体験の場を用意しています。</p>
+        <a class="button" href="/events/">募集中の体験を見る</a>
+      </div>
+      <div class="note">
+        <h3>イベントページを簡単に追加できます</h3>
+        <p>田んぼ教室・田植え体験・稲刈り体験などをMarkdownファイルで追加し、申し込みはGoogleフォームへ誘導できます。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container section-head">
+      <h2>募集中・準備中の体験</h2>
+      <p>詳細が決まり次第、各イベントページからお申し込みいただけます。</p>
+    </div>
+    <div class="container event-grid">
+      {events.map((event) => (
+        <article class="card">
+          <p class="eyebrow">{event.data.date}</p>
+          <h3>{event.data.title}</h3>
+          <p>{event.data.description}</p>
+          <div class="event-meta"><span class="pill status">{event.data.status}</span><span class="pill">{event.data.location}</span></div>
+          <a class="button-outline" href={`/events/${event.slug}/`}>詳細を見る</a>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
