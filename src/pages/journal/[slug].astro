@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('journal');
+  return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+<BaseLayout title={`${post.data.title}｜そらつち農場`} description={post.data.description}>
+  <section class="page-hero"><div class="container"><p class="eyebrow">JOURNAL</p><h1>{post.data.title}</h1><p class="lead">{post.data.description}</p><div class="event-meta"><span class="pill">{post.data.date}</span></div></div></section>
+  <section class="page-section"><div class="container prose"><Content /></div></section>
+</BaseLayout>
