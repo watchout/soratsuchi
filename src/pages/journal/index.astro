@@ -1,0 +1,9 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+const posts = (await getCollection('journal')).sort((a, b) => b.data.date.localeCompare(a.data.date));
+---
+<BaseLayout title="畑だより｜そらつち農場">
+  <section class="page-hero"><div class="container"><p class="eyebrow">JOURNAL</p><h1>畑だより</h1><p class="lead">田んぼや畑の様子、季節の作業、体験会のお知らせをお届けします。</p></div></section>
+  <section class="page-section"><div class="container journal-grid">{posts.map((post) => (<article class="card"><p class="eyebrow">{post.data.date}</p><h3>{post.data.title}</h3><p>{post.data.description}</p><a class="button-outline" href={`/journal/${post.slug}/`}>読む</a></article>))}</div></section>
+</BaseLayout>
